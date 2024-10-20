@@ -41,7 +41,25 @@ static char* rl_gets() {
 
   return line_read;
 }
-
+static int cmd_si(char *args)
+{
+  int n=0;
+  if(args == NULL)
+     n=1;
+  else
+    sscanf(args,%d,&n);
+  cpu_exec(n);
+  return 0;
+}
+static int cmd_info(char *args){
+    if(args == NULL)
+        printf("No args.\n");
+    else if(strcmp(args, "r") == 0)
+        isa_reg_display();
+    else if(strcmp(args, "w") == 0)
+        sdb_watchpoint_display();
+    return 0;
+}
 static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
