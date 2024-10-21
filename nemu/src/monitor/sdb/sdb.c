@@ -52,20 +52,31 @@ static int cmd_si(char *args)
   return 0;
 }
 static int cmd_info(char *args){
-    if(args == NULL)
-        printf("No args.\n");
-    else if(strcmp(args, "r") == 0)
-        isa_reg_display();
-    else if(strcmp(args, "w") == 0)
-        sdb_watchpoint_display();
-    return 0;
+  if(args == NULL)
+      printf("No args.\n");
+  else if(strcmp(args, "r") == 0)
+      isa_reg_display();
+  else if(strcmp(args, "w") == 0)
+      sdb_watchpoint_display();
+  return 0;
 }
 static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
 }
-
-
+static int cmd_x(char *args){
+  char* n = strtok(args," ");
+  char* baseaddr = strtok(NULL," ");
+  int len = 0;
+  paddr_t addr = 0;
+  sscanf(n, "%d", &len);
+  sscanf(baseaddr,"%x", &addr);
+ for(int i=0;i<n;i++)
+  {
+    printf("%x\n",pmem_read(addr,len)); 
+    addr=addr+4;
+  }
+}
 static int cmd_q(char *args) {
   	nemu_state.state=NEMU_QUIT;
 	return -1;
