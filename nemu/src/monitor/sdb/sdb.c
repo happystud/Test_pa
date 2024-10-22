@@ -47,7 +47,7 @@ static int cmd_si(char *args)
   if(args == NULL)
      n=1;
   else
-    sscanf(args,%d,&n);
+    sscanf(args,"%d",&n);
   cpu_exec(n);
   return 0;
 }
@@ -56,8 +56,6 @@ static int cmd_info(char *args){
       printf("No args.\n");
   else if(strcmp(args, "r") == 0)
       isa_reg_display();
-  else if(strcmp(args, "w") == 0)
-      sdb_watchpoint_display();
   return 0;
 }
 static int cmd_c(char *args) {
@@ -76,6 +74,7 @@ static int cmd_x(char *args){
     printf("%x\n",pmem_read(addr,4)); 
     addr=addr+4;
   }
+  return 0;
 }
 static int cmd_q(char *args) {
   	nemu_state.state=NEMU_QUIT;
@@ -92,7 +91,9 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  {"x","Scan Memory",cmd_x},
+  {"si","Single step execution",cmd_si},
+  {"info","Print Register",cmd_info},
   /* TODO: Add more commands */
 
 };
